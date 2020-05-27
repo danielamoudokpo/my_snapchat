@@ -4,9 +4,14 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>he</Text>
-      <Image source={{uri:'./assets/snap2.png'}}/>
-
+      <Text> hello world!</Text>
+      <Image source={require('./assets/snap2.png')}/>
+      <View style={{
+        borderWidth :10,
+        paddingTop: 10,
+      }}>
+        <Text> Inscription </Text>
+      </View>
     </View>
 
   );
