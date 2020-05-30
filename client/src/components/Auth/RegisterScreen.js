@@ -1,15 +1,19 @@
 import React, {Component} from 'react';
 import {view , StyleSheet, Text,  TextInput, Button, View, Alert } from 'react-native';
+import AuthService from '../Controller/AuthService'
 
 // function RegisterScreen({ navigation }) {
 class RegisterScreen extends Component {
 
     constructor (){
         super();
+        this.Auth = new AuthService(),
+
         this.state ={
-            email : null,
-            password : null,
-            isSend : false
+            email : '',
+            password : '',
+            isSend : false,
+            validEmail : false,
         }
     }
 
@@ -20,15 +24,41 @@ class RegisterScreen extends Component {
     }
 
     UserRegister = async () =>{
-        console.log(this.state.email,this.state.password);
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (reg.test(this.state.email) === false) {
+            console.log("Email is Not Correct");
+            this.setState({ validEmail: false })
+            Alert.alert('Email is Not Correct')
+            // return false;
+          }else{
+            this.setState({ validEmail: true })
+            console.log("Email is Correct");
+                if ( this.state.password === '' ) {
+                    Alert.alert('Please Enter your Credendials')
+                }else{
+                    this.setState({isSend: true}),
+                    console.log('send');
+                    // console.log(this.state.email,this.state.password);
+                    var email = this.state.email;
+                    var password = this.state.password;
+                    var data = {
+                        email,
+                        password
+                    }
+                    let res = await this.Auth.register(data)
+                    console.log(res);
+                    if (res == "email already exist") {
+                        Alert.alert('This email already exist')
+                    }else{
+                        Alert.alert('your account has been created');
+                        this.props.navigation.push('Login');
+                    }
+                    
+                }
+          }
         
-        if (this.state.email == null || this.state.password == null ) {
-            Alert.alert('Please Enter your Credendials')
-        }else{
-            this.state.isSend = true,
-            console.log('send');
-            
-        }
+        
+        
     }
     render(){
         return (

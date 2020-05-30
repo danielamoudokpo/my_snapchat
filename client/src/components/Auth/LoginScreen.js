@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import {view , StyleSheet, Text,  TextInput, Button, View, Alert } from 'react-native';
+import AuthService from '../Controller/AuthService';
 
 class LoginScreen extends Component{
 
   constructor (){
       super();
+      this.Auth = new AuthService();
       this.state={
-        email : null,
-        password : null,
+        email : '',
+        password : '',
         isLogin : false,
       }
 
@@ -19,14 +21,30 @@ class LoginScreen extends Component{
     this.setState[key]=val;
   }
 
-  UserLoging = async ()=> {
+  UserLoging = async()=> {
 
-    if (this.state.email == null || this.state.password == null) {
+    if (this.state.email == '' || this.state.password == '') {
       Alert.alert("Please fill in all your credentials")
     }else{
-      this.state.isLogin = true;
+      this.setState({isLogin : true})
       console.log("user loggin");
-      
+      var email = this.state.email;
+      var password = this.state.password;
+      var data = {
+          email,
+          password
+      }
+      let res = await this.Auth.login(data);
+      console.log(res);
+      if (res === 'kaka') {
+        // console.log("oui");
+        Alert.alert("Incorrect email or Password")
+        
+      }else{
+        // console.log("non");
+        this.props.navigation.push('Profile')
+        
+      }
     }
 
   }
@@ -55,7 +73,7 @@ class LoginScreen extends Component{
             <Button
                 title="Login"
                 backgroundColor="green"
-                onPress={() => this.UserRegister()}
+                onPress={() => this.UserLoging()}
                 />
             <Text 
                 style={styles.loginText}
