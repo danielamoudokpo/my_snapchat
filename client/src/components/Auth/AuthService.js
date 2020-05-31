@@ -1,10 +1,9 @@
-import React, { Component } from "react"
-import Axios from 'axios'
+import React from "react";
+import Axios from 'axios';
 import { AsyncStorage } from 'react-native'
-import { Constants } from 'expo';
 
 
-class AuthService  {
+class AuthService   {
 
 
     async register(data){
@@ -45,7 +44,6 @@ class AuthService  {
        
         }
 
-
     async contacts (token){
         console.log("yes");
         return new Promise ((resolve,reject)=>{
@@ -56,7 +54,7 @@ class AuthService  {
               // console.log(token);
               Axios.get('http://snapi.epitech.eu/all', {headers})
               .then( res => {
-                // console.log(res.data.data)
+                // console.log(res)
                 if(res.status == 200){
                   console.log('oooooo');
                   
@@ -75,12 +73,11 @@ class AuthService  {
           const value = await AsyncStorage.getItem('token');
           if (value !== null) {
             // We have data!!
-            console.log("too");
+            // console.log("too");
             // console.log(value);
             return value
           }else{
             console.log('null');
-            
           }
         } catch (error) {
           // Error retrieving data
@@ -99,8 +96,116 @@ class AuthService  {
             console.log('AsyncStorage save error: ' + error.message);
         }
     };
+
+
+    sendSnap = async (token,duration,to,image)=> {
+      console.log('ouiiiiiiiii');
+      
+      return new Promise ((resolve,reject)=>{
+
+        let headers = {
+          token
+        };
+  
+        let body = new FormData();
+        body.append('duration', duration);
+        body.append('to', to);
+        var photo = {
+          uri: image,
+          type: 'image/jpeg',
+          name: 'photo.jpg',
+        };
+
+        body.append('image', photo);
+
+        Axios.post('http://snapi.epitech.eu/snap',body, {headers} )
+        .then(res =>{
+          // console.log(res.status);
+          if (res.status == 200) {
+            resolve(res.data.data)
+          }
+          
+        }).catch(error =>{
+          console.log(error);
+          
+        })
+      })
+
+    }
+
+    getSnaps = async (token) =>{
+
+      return new Promise((resolve,reject)=>{
+
+        let headers ={
+          token
+        }
+
+        Axios.get('http://snapi.epitech.eu/snaps',{headers})
+        .then( res=>{
+          console.log("toi");
+          
+          if (res.status == 200) {
+
+            resolve(res.data.data);
+              
+          }
+        }).catch(error =>{
+          console.log(error);
+          
+        })
+      })
+    }
+
+
+    getSnapId = async(id,duration,from,token)=>{
+      console.log("here");
+      console.log(id);
+      console.log(token);
+      
+      return new Promise ((resolve,reject)=>{
+
+        let headers ={
+          token
+        }
+        const myUrl = 'http://snapi.epitech.eu/snap/'+id;
+        console.log(url);
+        
+        Axios.get(myUrl,{headers})
+        .then(res=>{
+          console.log('almost');
+
+          if(res.status==200){
+            console.log('sas');
+
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            resolve(url)
+
+            // console.log(res);
+            
+          }
+          
+        }).catch(error =>{
+          console.log(error);
+          
+        })
+
+        // const val = await AsyncStorage.getItem('token');
+        // const url = 'http://snapi.epitech.eu/snap/%27+id
+        // Axios({
+        //     url: url,
+        //     method: 'GET',
+        //     headers: {token: val},
+        //     responseType: 'blob',
+        //   }).then((response) => {
+        //     const url = window.URL.createObjectURL(new Blob([response.data]));
+        //     this.props.navigation.navigate('DisplaySnap', {image: url})
+        // });
+      })
+    }
         
 }
+
 
 
 export default AuthService;
