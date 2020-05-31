@@ -1,65 +1,16 @@
-import 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import RegisterScreen  from './src/components/Auth/RegisterScreen';
 import LoginScreen  from './src/components/Auth/LoginScreen'
-import ProfileScreen from './src/User/ProfileScreen';
-
- function HomeScreen({navigation}) {
-  return (
-    <View style={styles.container}>
-      {/* <Text> hello worldffseeebgdrssrgs!</Text> */}
-      <Image 
-        source={require('./assets/snap2.png')}
-        style={{width:400, height: 400}}
-      />
-
-      <View style={styles.flexComponents}>
-        <View style={{flex: 1}}>
-            <Button 
-            onPress={() => 
-                navigation.push('Register')
-            }
-            title='Register'
-             raised={true} />
-        </View>
-      </View>
-
-      <View style={styles.flexComponents}>
-          <View style={{flex: 1}}>
-              <Button 
-                color= 'red' title='Login' raised={true}
-                onPress={()=> 
-                    navigation.push('Login')
-                }
-  />
-          </View>
-        </View>
-
-    </View>
-
-  
-
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffff00',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  flexComponents :{
-    flex: 2,
-    backgroundColor: '#00ffff00',
-    flexDirection: 'row',
-    paddingBottom: 20,
-    
-  }
-});
+import ProfileScreen from './src/components/User/ProfileScreen';
+import BottomNav from './src/components/Tabs/BottomNav';
+import HomeScreen from './src/components/User/HomeScreen';
+import bottomNav from './src/components/Tabs/BottomNav';
+ 
 
 
 const Stack = createStackNavigator();
@@ -80,34 +31,52 @@ function App() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          headerLeft: null,
+          // headerLeft: null,
         }}
       />
        <Stack.Screen
         name="Register"
         component={RegisterScreen}
+         options={{
+          headerLeft: null,
+        }}
       />
         <Stack.Screen
         name="Login"
-        component={LoginScreen}
+        component={LoginScreen} options={{
+         
+          headerLeft: null,
+         
+        }}
       
       />
         <Stack.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={bottomNav}
         options={{
+          headerLeft: null,
           title: 'Profile',
           headerStyle: {
             backgroundColor: 'yellow',
-            
           },
           headerTintColor: 'black',
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          headerLeft: null,
+          // headerRight: () => (
+          //   <Button
+          //     title="Logout"
+          //     onPress={() => alert('LogOut')}
+          //     backgroundColor="yellow"
+          //   />
+          // ),
         }}
       />
+
+      {/* <Stack.Screen
+        name = 'Nav'
+        component ={BottomNav}
+      /> */}
     </Stack.Navigator>
   </NavigationContainer>
   );

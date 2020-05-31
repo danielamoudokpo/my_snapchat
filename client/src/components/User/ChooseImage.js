@@ -1,10 +1,15 @@
-import React ,{ Component } from "react";
-import {view , StyleSheet, Text,  TextInput, Button, View, Alert } from 'react-native';
+import React ,{ Component, Fragment } from "react";
+import { AsyncStorage ,view , StyleSheet, Text,  TextInput, Button, View, Alert, Image } from 'react-native';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import ContactsScreen from '../User/ContactsScreen'
  
-class ProfileScreen extends Component {
+class ChooseImage extends Component {
     state = {
       image: null,
     };
@@ -15,7 +20,16 @@ class ProfileScreen extends Component {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Button title="Pick an image from camera roll" onPress={this._pickImage} />
-          {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+          {image && ( <Fragment >
+            <Image 
+              style={{ width: 200, height: 200 }}
+              source={{ uri: image }}/>
+            <Button
+              title = 'Choose a Receiver'
+              onPress={()=> this.receiver()}
+            />
+          </Fragment>
+            )}
         </View>
       );
     }
@@ -33,6 +47,10 @@ class ProfileScreen extends Component {
       }
     };
   
+    receiver = async ()=>{
+      console.log("yes");
+      // this.props.navigation.push('Contacts')
+    }
     _pickImage = async () => {
       try {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -42,10 +60,13 @@ class ProfileScreen extends Component {
           quality: 1,
         });
         if (!result.cancelled) {
+          console.log(result.uri);
+          
           this.setState({ image: result.uri });
         }
   
         console.log(result);
+
       } catch (E) {
         console.log(E);
       }
@@ -53,38 +74,6 @@ class ProfileScreen extends Component {
   }
 
 
-// class ProfileScreen extends Component {
-
-//     render(){
-
-//         return (
-//             <Button
-//               onPress={() =>
-//                 this.props.navigation.setParams({
-//                   friends:
-//                     route.params.friends[0] === 'Brent'
-//                       ? ['Wojciech', 'Szymon', 'Jakub']
-//                       : ['Brent', 'Satya', 'Michaś'],
-//                   title:
-//                     route.params.title === "Brent's Profile"
-//                       ? "Lucy's Profile"
-//                       : "Brent's Profile",
-//                 })
-//               }
-//               title="Swap title and friends"
-//             />
-//           );
-//     }
-
-// }
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         justifyContent: 'center',
-//         alignItems: 'center'
-//       }
-// })
+export default ChooseImage ;
 
 
-export default ProfileScreen ;

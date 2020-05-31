@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {view , StyleSheet, Text,  TextInput, Button, View, Alert } from 'react-native';
-import AuthService from '../Controller/AuthService';
+import { AsyncStorage,view , StyleSheet, Text,  TextInput, Button, View, Alert } from 'react-native';
+import AuthService from './AuthService';
 
 class LoginScreen extends Component{
 
@@ -35,15 +35,49 @@ class LoginScreen extends Component{
           password
       }
       let res = await this.Auth.login(data);
-      console.log(res);
+      // console.log(res);
       if (res === 'kaka') {
         // console.log("oui");
         Alert.alert("Incorrect email or Password")
         
       }else{
-        // console.log("non");
+        var data = res.data.token;
+        // var email = res.data.email;
+        let setItem = async () => {
+          console.log('ooo');
+          try {
+              await AsyncStorage.setItem('token',data);
+              console.log('data stored');
+          } catch (error) {
+              // Error saving data
+              console.log('AsyncStorage save error: ' + error.message);
+          }
+      };
+
+        setItem();
+
+        let retrieveData = async () => {
+          try {
+            const value = await AsyncStorage.getItem('token');
+            if (value !== null) {
+              // We have data!!
+              console.log("yes token");
+              // console.log(value);
+            }else{
+              console.log('null');
+              
+            }
+          } catch (error) {
+            // Error retrieving data
+            console.log('AsyncStorage save error: ' + error.message);
+
+          }
+        };
+
+        retrieveData();
+
         this.props.navigation.push('Profile')
-        
+
       }
     }
 
@@ -103,7 +137,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
-  }
+  },
+  loginText:{
+
+    color: "red"
+    
+}
 })
 
 // function LoginScreen({ navigation }) {
