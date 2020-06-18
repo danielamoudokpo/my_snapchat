@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {view , StyleSheet, Text,  TextInput, Button, View, Alert } from 'react-native';
+import { StyleSheet, Text,  TextInput, Button, View, Alert } from 'react-native';
 import AuthService from './AuthService'
 
 // function RegisterScreen({ navigation }) {

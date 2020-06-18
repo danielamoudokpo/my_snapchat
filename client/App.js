@@ -10,9 +10,8 @@ import ProfileScreen from './src/components/User/ProfileScreen';
 import BottomNav from './src/components/Tabs/BottomNav';
 import HomeScreen from './src/components/User/HomeScreen';
 import bottomNav from './src/components/Tabs/BottomNav';
-
+import SnapScreen from './src/components/User/SnapScreen';
  
-
 
 const Stack = createStackNavigator();
 
@@ -49,7 +48,15 @@ function App() {
           headerLeft: null,
          
         }}
-      
+        />
+        <Stack.Screen
+        name="Snap"
+        component={SnapScreen} options={{
+         
+          // headerLeft: null,
+         
+        }}
+        // initialParams={{ imag: null  }}
       />
         <Stack.Screen
         name="Profile"

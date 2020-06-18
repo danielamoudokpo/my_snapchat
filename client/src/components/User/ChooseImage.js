@@ -7,11 +7,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import ContactsScreen from '../User/ContactsScreen';
-import ModalSelector from 'react-native-modal-selector';
 import ModalDropdown from 'react-native-modal-dropdown';
 import AuthService from '../Auth/AuthService'
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class ChooseImage extends Component {
 
@@ -23,6 +20,8 @@ class ChooseImage extends Component {
           dest:null,
           duration: null,
           isModalVisible:false,
+          timeTab : null,
+          time:null,
 
         };
     
@@ -39,6 +38,11 @@ class ChooseImage extends Component {
           moi.push(item.email)
      });
       this.setState({contacts:moi});
+
+      let tab = [5,10,15,20];
+
+      this.setState({timeTab : tab})
+
       
     }
     
@@ -56,9 +60,17 @@ class ChooseImage extends Component {
           <ModalDropdown
             defaultValue	= 'Choose a Receiver'
             style = {Styles.enterSearch}
-            onPress={()=> this.receiver()}
+            // onPress={()=> this.receiver()}
             options={ this.state.contacts}
             onSelect={(value) => this.setState({ dest:this.state.contacts[value]})}
+            />
+
+          <ModalDropdown
+            defaultValue	= 'Choose a time'
+            style = {Styles.enterSearch}
+            // onPress={()=> this.receiver()}
+            options={ this.state.timeTab}
+            onSelect={(value) => this.setState({ time:this.state.timeTab[value]})}
             />
 
             <Button
@@ -94,11 +106,18 @@ class ChooseImage extends Component {
       let token = await this.state.Auth.retrive();
       let image = this.state.image;
       let to = this.state.dest;
-      let duration = 5;
+      let duration = this.state.time;
+
       
-      var te = this.state.Auth.sendSnap(token,duration,to,image);
+      console.log(duration);
+      
+      var te = await this.state.Auth.sendSnap(token,duration,to,image);
       
       console.log(te);
+
+      this.props.navigation.push('Profile');
+      // this.props.navigation.push('Login')
+
       
       // console.log(this.state.contacts);
 

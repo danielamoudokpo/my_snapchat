@@ -1,9 +1,5 @@
 import React ,{ Component} from 'react';
-import { AsyncStorage,StyleSheet, Text, View, Image, Button , OpaciteButton } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
+import { AsyncStorage,StyleSheet, Text, View, Image, Button } from 'react-native';
 
  class  LogoutScreen extends Component{
 

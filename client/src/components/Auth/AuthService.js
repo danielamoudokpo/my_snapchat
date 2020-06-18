@@ -100,7 +100,7 @@ class AuthService   {
 
     sendSnap = async (token,duration,to,image)=> {
       console.log('ouiiiiiiiii');
-      
+      console.log(duration);
       return new Promise ((resolve,reject)=>{
 
         let headers = {
@@ -169,9 +169,10 @@ class AuthService   {
           token
         }
         const myUrl = 'http://snapi.epitech.eu/snap/'+id;
-        console.log(url);
+        console.log(myUrl);
         
-        Axios.get(myUrl,{headers})
+        Axios.get(myUrl,{headers ,responseType: 'blob'},
+        )
         .then(res=>{
           console.log('almost');
 
@@ -189,20 +190,47 @@ class AuthService   {
           console.log(error);
           
         })
-
-        // const val = await AsyncStorage.getItem('token');
-        // const url = 'http://snapi.epitech.eu/snap/%27+id
-        // Axios({
-        //     url: url,
-        //     method: 'GET',
-        //     headers: {token: val},
-        //     responseType: 'blob',
-        //   }).then((response) => {
-        //     const url = window.URL.createObjectURL(new Blob([response.data]));
-        //     this.props.navigation.navigate('DisplaySnap', {image: url})
-        // });
       })
     }
+
+    seenSnaps = async (id,token)=> {
+      console.log("ppp");
+
+      // var token = await this.retrive();
+      return new Promise ((resolve,reject)=>{
+
+        // console.log(token);
+        let headers ={
+          'Content-Type': " application/json" ,
+          'token':token,
+
+        }
+        let body ={
+          'id':id
+        } 
+        const myUrl = 'http://snapi.epitech.eu/seen';
+        console.log(myUrl);
+        
+        Axios.post(myUrl,body, {headers},
+        )
+        .then(res=>{
+          console.log('hi');
+          console.log(res);
+          
+          if(res.status==204){
+            console.log("good");
+            
+            resolve(res.data.data)
+            // console.log(res);
+          }
+          
+        }).catch(error =>{
+          console.log(error);
+          
+        })
+      })
+    }
+
         
 }
 

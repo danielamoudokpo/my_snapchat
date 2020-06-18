@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { AsyncStorage,view , StyleSheet, Text,  TextInput, Button, View, Alert } from 'react-native';
+import { AsyncStorage, StyleSheet, Text,  TextInput, Button, View, Alert } from 'react-native';
 import AuthService from './AuthService';
 
 class LoginScreen extends Component{

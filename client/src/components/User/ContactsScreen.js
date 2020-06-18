@@ -1,7 +1,6 @@
 import React ,{ Component}from 'react'
-import { FlatList,AsyncStorage ,view , StyleSheet, Text, TextInput, Button, View, Alert, ScrollView, TouchableHighlight } from 'react-native';
+import { FlatList, StyleSheet, Text, View, ScrollView } from 'react-native';
 import AuthService from '../Auth/AuthService'
-import { Constants } from 'expo';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 // import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -43,7 +42,6 @@ class ContactsScreen extends Component{
                     renderItem={({ item }) => <TouchableOpacity style= {styles.text}>
                         <Text > {item.email} </Text>
                         </TouchableOpacity>}
-
                         
                     />
                     

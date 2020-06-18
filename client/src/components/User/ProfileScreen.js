@@ -1,37 +1,23 @@
 import React ,{ Component } from "react";
-import { ScrollView,FlatList,TouchableOpacity,AsyncStorage ,view , StyleSheet, Text,  TextInput, Button, View, Alert } from 'react-native';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import * as ImagePicker from 'expo-image-picker';
-import Constants from 'expo-constants';
-import * as Permissions from 'expo-permissions';
-import AuthService from '../Auth/AuthService'
-import SnapScreen from '../User/SnapScreen'
+import { FlatList,TouchableOpacity, StyleSheet, Text, Button, View, RefreshControl} from 'react-native';
 
+import AuthService from '../Auth/AuthService';
  
 class ProfileScreen extends Component {
+ 
     state = {
       Auth : new AuthService(),
       image: null,
       snaps: null,
     };
-
     async componentDidMount(){
 
       let token = await this.state.Auth.retrive();
       let im = await this.state.Auth.getSnaps(token);
-      console.log(im);
-      
-      // var senders = []
-      // im.map((e)=>{
-      //   // console.log(e)
-      //   senders.push(e.from)
-
-      // });
-
-      // console.log(senders);
 
       this.setState({ snaps:im})
-      
+
+      // console.log(this.state.snaps);
       
     }
   
@@ -67,13 +53,42 @@ class ProfileScreen extends Component {
 
       console.log(imgUrl);
 
-      this.props.navigation.navigate('SnapScreen', {image: imgUrl});
+      this.props.navigation.navigate('Snap', {imag: imgUrl,time:duration});
 
-    
-    }
-  
+      let lst = await this.state.Auth.seenSnaps(id,token);
+
+      console.log(lst);
+      
+
+      let snaps = this.state.snaps
+
+      let seenSnapId = id;
+
+      var found = snaps.find(element => element.snap_id == seenSnapId);
+
+      console.log(found);
+      
+      if (found) {
+        console.log('del');
+        const index = snaps.indexOf(found);
+        if (index > -1) {
+          snaps.splice(index, 1);
+        }
+      }else{
+        console.log('led');
+        
+      }
+      this.setState({snaps:snaps});
+
+      // window.location.reload(false);
+      // const onRefresh = React.useCallback(() => {
+        // setRefreshing(true);
+
+    // });
+
   }
   
+  }
   
   const styles = StyleSheet.create({
     container: {
